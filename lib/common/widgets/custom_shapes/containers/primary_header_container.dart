@@ -3,7 +3,6 @@ import 'package:t_store/common/widgets/custom_shapes/containers/circular_contain
 import 'package:t_store/common/widgets/custom_shapes/curved/curved_edges_widgets.dart';
 import 'package:t_store/utils/constants/colors.dart';
 
-
 class TprimaryHeaderContainer extends StatelessWidget {
   const TprimaryHeaderContainer({
     super.key,
@@ -28,14 +27,14 @@ class TprimaryHeaderContainer extends StatelessWidget {
                 top: -150,
                 right: -250,
                 child: TCircularContainer(
-                  backgroundColor: TColors.textWhite.withOpacity(0.1),
+                  backgroundColor: TColors.textWhite.withValues(alpha: 0.1),
                 ),
               ),
               Positioned(
                 top: 100,
                 right: -300,
                 child: TCircularContainer(
-                  backgroundColor: TColors.textWhite.withOpacity(0.1),
+                  backgroundColor: TColors.textWhite.withValues(alpha: 0.1),
                 ),
               ),
               child,

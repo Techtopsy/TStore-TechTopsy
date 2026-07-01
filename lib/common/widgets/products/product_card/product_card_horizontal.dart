@@ -53,7 +53,8 @@ class TProductCardHorizontal extends StatelessWidget {
                       top: 12,
                       child: TRoundedContainer(
                         radius: TSizes.sm,
-                        backgroundColor: TColors.secondary.withOpacity(0.8),
+                        backgroundColor:
+                            TColors.secondary.withValues(alpha: 0.8),
                         padding: const EdgeInsets.symmetric(
                             horizontal: TSizes.sm, vertical: TSizes.xs),
                         child: Text(
@@ -81,8 +82,8 @@ class TProductCardHorizontal extends StatelessWidget {
               SizedBox(
                 width: 172,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: TSizes.sm, left: TSizes.sm),
+                  padding:
+                      const EdgeInsets.only(top: TSizes.sm, left: TSizes.sm),
                   child: Column(
                     children: [
                       const Column(
@@ -104,16 +105,15 @@ class TProductCardHorizontal extends StatelessWidget {
                         children: [
                           //pricing
                           const Flexible(
-                              child:
-                                  TProductPriceText(price: '256.0')),
-              
+                              child: TProductPriceText(price: '256.0')),
+
                           //add to cart button
                           Container(
                             decoration: const BoxDecoration(
                                 color: TColors.dark,
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        TSizes.cardRadiusMd),
+                                    topLeft:
+                                        Radius.circular(TSizes.cardRadiusMd),
                                     bottomRight: Radius.circular(
                                         TSizes.productImageRadius))),
                             child: const SizedBox(

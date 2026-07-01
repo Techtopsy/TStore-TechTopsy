@@ -25,7 +25,7 @@ class SignUpController extends GetxController {
       GlobalKey<FormState>(); //Form key for form validation
 
   /// -- SIGNUP
-  void signup() async {
+  Future<void> signup() async {
     try {
       // Start Loading
       TFullScreenLoader.openLoadingDialog(
@@ -41,6 +41,8 @@ class SignUpController extends GetxController {
 
       // Form Validation
       if (!signupFormKey.currentState!.validate()) {
+        // Remove Loader
+        TFullScreenLoader.stopLoading();
         return;
       }
 
@@ -74,7 +76,7 @@ class SignUpController extends GetxController {
       await userRepository.saveUserRecord(newUser);
 
       // Remove Loader
-        TFullScreenLoader.stopLoading();
+      TFullScreenLoader.stopLoading();
 
       // Show Success Message
       TLoaders.successSnackBar(

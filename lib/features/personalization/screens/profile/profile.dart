@@ -4,23 +4,19 @@ import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/app_bar/app_bar.dart';
 import 'package:t_store/common/widgets/images/t_circular_image.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
-import 'package:t_store/features/personalization/screens/profile/change_name.dart';
+import 'package:t_store/features/personalization/screens/profile/widgets/change_name/change_name.dart';
 import 'package:t_store/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
-class ProfileScreen extends StatefulWidget {
+import '../../controllers/user_controller.dart';
+
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  bool _profileToggle = false;
-  @override
   Widget build(BuildContext context) {
-    // final controller = UserController.instance;
+    final controller = UserController.instance;
     return Scaffold(
       appBar: const TAppBar(
         showBackArrow: true,
@@ -36,17 +32,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    const TCircularImage(
-                      image: TImages.user,
-                      width: 80,
-                      height: 80,
-                    ),
+                    Obx(() {
+                      final networkImage = controller.user.value.profilePicture;
+                      final image =
+                          networkImage.isNotEmpty ? NetworkImage : TImages.user;
+                      return TCircularImage(
+                        image: TImages.user,
+                        width: 80,
+                        height: 80,
+                        isNetworkImage: networkImage.isNotEmpty,
+                      );
+                    }),
                     TextButton(
-                        onPressed: () => Get.off(() => const ChangeName()),
-                        child: const Text('Change Profile Picture'))
+                      onPressed: () => controller.uploadUserProfilePicture(),
+                      child: const Text('Change Profile Picture'),
+                    )
                   ],
                 ),
               ),
+
+              /// Details
               const SizedBox(
                 height: TSizes.spaceBtwItems / 2,
               ),
@@ -54,6 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: TSizes.spaceBtwItems,
               ),
+
+              /// Heading Profile Info
               const TSectionHeading(
                 title: 'Profile Information',
                 showActionButton: false,
@@ -63,16 +70,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
 
               TProfileMenu(
-                onPressed: () => Get.off(() => const ChangeName()),
                 title: 'Name',
-                value: 'TechTopsy LTD',
-                // controller.user.value.fullName
+                value: controller.user.value.fullName,
+                onPressed: () => Get.to(() => const ChangeName()),
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'Username',
-                value: 'Techtopsy123',
-                // controller.user.value.username
+                value: controller.user.value.userName,
+                onPressed: () {},
               ),
               const SizedBox(
                 height: TSizes.spaceBtwItems,
@@ -86,33 +91,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 showActionButton: false,
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'User ID',
-                value: 'TS0002X3Q',
-                // controller.user.value.username
+                value: controller.user.value.id,
                 icon: Iconsax.copy,
+                onPressed: () {},
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'E-mail',
-                value: 'dashboard001@techtopsy.com',
-                // controller.user.value.email
+                value: controller.user.value.email,
+                onPressed: () {},
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'Phone Number',
-                // controller.user.value.phoneNumber
-                value: '+1 737 210 1630',
+                value: controller.user.value.phoneNumber,
+                onPressed: () {},
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'Gender',
-                value: 'male',
+                value: "",
+                onPressed: () {},
               ),
               TProfileMenu(
-                onPressed: () {},
                 title: 'Date of Birth',
-                value: '08 Jun, 1988',
+                value: "",
+                onPressed: () {},
               ),
 
               const Divider(),
@@ -122,7 +124,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               TextButton(
                   onPressed: () {},
-                  // controller.user.value.phoneNumber
                   child: const Text(
                     'Close Account',
                     style: TextStyle(color: Colors.red),

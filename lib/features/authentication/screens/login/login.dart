@@ -3,10 +3,9 @@ import 'package:get/get_utils/src/extensions/string_extensions.dart';
 
 import 'package:t_store/common/styles/spacing_styles.dart';
 import 'package:t_store/common/widgets/widget_login_form/form_divider.dart';
-import 'package:t_store/common/widgets/widget_login_form/social-button.dart';
+import 'package:t_store/common/widgets/widget_login_form/social_button.dart';
 import 'package:t_store/features/authentication/screens/login/widgets/login_form.dart';
 import 'package:t_store/features/authentication/screens/login/widgets/login_header.dart';
-
 
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
@@ -31,11 +30,12 @@ class LoginScreen extends StatelessWidget {
               /// Form
               const TloginForm(), // Column, Form
 
-              TFormDivider(dark: dark, dividerText: TTexts.orSignInWith.capitalize!),
-           const SizedBox(height: TSizes.spaceBtwSections),
-            /// -- Footer
-              const TsocialButtons() // Row
+              TFormDivider(
+                  dark: dark, dividerText: TTexts.orSignInWith.capitalize!),
+              const SizedBox(height: TSizes.spaceBtwSections),
 
+              /// -- Footer
+              const TsocialButtons() // Row
             ],
           ), // Column
         ), // Padding
@@ -43,6 +43,3 @@ class LoginScreen extends StatelessWidget {
     ); // Scaffold
   }
 }
-
-
-

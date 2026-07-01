@@ -6,9 +6,10 @@ import '../constants/colors.dart';
 import '../helpers/helper_functions.dart';
 
 class TLoaders {
-  static hideSnackBar() => ScaffoldMessenger.of(Get.context!).hideCurrentSnackBar();
+  static void hideSnackBar() =>
+      ScaffoldMessenger.of(Get.context!).hideCurrentSnackBar();
 
-  static customToast({required message}) {
+  static void customToast({required dynamic message}) {
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(
         elevation: 0,
@@ -19,15 +20,20 @@ class TLoaders {
           margin: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: THelperFunctions.isDarkMode(Get.context!) ? TColors.darkerGrey.withOpacity(0.9) : TColors.grey.withOpacity(0.9),
+            color: THelperFunctions.isDarkMode(Get.context!)
+                ? TColors.darkerGrey.withValues(alpha: 0.9)
+                : TColors.grey.withValues(alpha: 0.9),
           ),
-          child: Center(child: Text(message, style: Theme.of(Get.context!).textTheme.labelLarge)),
+          child: Center(
+              child: Text(message,
+                  style: Theme.of(Get.context!).textTheme.labelLarge)),
         ),
       ),
     );
   }
 
-  static successSnackBar({required title, message = '', duration = 3}) {
+  static void successSnackBar(
+      {required dynamic title, message = '', duration = 3}) {
     Get.snackbar(
       title,
       message,
@@ -42,7 +48,7 @@ class TLoaders {
     );
   }
 
-  static warningSnackBar({required title, message = ''}) {
+  static void warningSnackBar({required dynamic title, message = ''}) {
     Get.snackbar(
       title,
       message,
@@ -57,7 +63,7 @@ class TLoaders {
     );
   }
 
-  static errorSnackBar({required title, message = ''}) {
+  static void errorSnackBar({required dynamic title, message = ''}) {
     Get.snackbar(
       title,
       message,

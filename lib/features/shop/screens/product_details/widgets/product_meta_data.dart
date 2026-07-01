@@ -25,7 +25,7 @@ class TProductMetaData extends StatelessWidget {
             //sale tag
             TRoundedContainer(
               radius: TSizes.sm,
-              backgroundColor: TColors.secondary.withOpacity(0.8),
+              backgroundColor: TColors.secondary.withValues(alpha: 0.8),
               padding: const EdgeInsets.symmetric(
                   horizontal: TSizes.sm, vertical: TSizes.xs),
               child: Text(
@@ -57,7 +57,6 @@ class TProductMetaData extends StatelessWidget {
               price: '175',
               isLarge: true,
             )
-
           ],
         ),
 
@@ -75,17 +74,16 @@ class TProductMetaData extends StatelessWidget {
         Row(
           children: [
             const TProductTitleText(title: 'Status'),
-             const SizedBox(
-          width: TSizes.spaceBtwItems,
-        ),
-        Text(
-          'In Stock',
-          style: Theme.of(context).textTheme.titleMedium!,
-        ),
-
+            const SizedBox(
+              width: TSizes.spaceBtwItems,
+            ),
+            Text(
+              'In Stock',
+              style: Theme.of(context).textTheme.titleMedium!,
+            ),
           ],
         ),
-       
+
         const SizedBox(
           height: TSizes.spaceBtwItems / 1.5,
         ),
@@ -93,12 +91,16 @@ class TProductMetaData extends StatelessWidget {
         //brand
         Row(
           children: [
-            TCircularImage(image: TImages.cosmeticsIcon,
-            width: 32,
-            height: 32,
-            overlayColor: dark ? TColors.white : TColors.black,
+            TCircularImage(
+              image: TImages.cosmeticsIcon,
+              width: 32,
+              height: 32,
+              overlayColor: dark ? TColors.white : TColors.black,
             ),
-            const TBrandTitleWithVerifiedIcon(title: 'Nike', brandTextSize: TextSizes.medium,),
+            const TBrandTitleWithVerifiedIcon(
+              title: 'Nike',
+              brandTextSize: TextSizes.medium,
+            ),
           ],
         )
       ],

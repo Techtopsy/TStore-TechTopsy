@@ -11,10 +11,10 @@ class OnBoardingController extends GetxController {
   Rx<int> currentPageIndex = 0.obs;
 
   /// Update Current Index when Page Scroll
-  void updatePageIndicator(index) => currentPageIndex.value = index;
+  void updatePageIndicator(dynamic index) => currentPageIndex.value = index;
 
   /// Jump to the specific dot selected page.
-  void dotNavigationClick(index) {
+  void dotNavigationClick(dynamic index) {
     currentPageIndex.value = index;
     pageController.jumpTo(index);
   }

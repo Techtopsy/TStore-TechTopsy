@@ -47,6 +47,27 @@ class UserModel {
         profilePicture: "",
       );
 
+  /// Create a copy of the model with updated fields
+  UserModel copyWith({
+    String? id,
+    String? userName,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String? profilePicture,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      userName: userName ?? this.userName,
+      email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profilePicture: profilePicture ?? this.profilePicture,
+    );
+  }
+
   /// Convert model to JSON structure for storing data in Firebase.
   Map<String, dynamic> toJson() {
     return {

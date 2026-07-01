@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:t_store/common/widgets/sortable/t_rounded_container.dart';
 import 'package:t_store/utils/constants/colors.dart';
@@ -16,7 +15,8 @@ class TCouponCode extends StatelessWidget {
     return TRoundedContainer(
       showBorder: true,
       backgroundColor: dark ? TColors.dark : TColors.white,
-      padding: const EdgeInsets.only(top: TSizes.sm, right: TSizes.sm, bottom: TSizes.sm, left: TSizes.md),
+      padding: const EdgeInsets.only(
+          top: TSizes.sm, right: TSizes.sm, bottom: TSizes.sm, left: TSizes.md),
       child: Row(
         children: [
           Flexible(
@@ -30,16 +30,20 @@ class TCouponCode extends StatelessWidget {
               ),
             ),
           ),
-    
+
           //Button
-          SizedBox(width: 80, child:  ElevatedButton(onPressed: (){}, 
-          style: ElevatedButton.styleFrom(
-            foregroundColor: dark ? TColors.white.withOpacity(0.5) : TColors.dark.withOpacity(0.5),
-            backgroundColor: TColors.grey.withOpacity(0.2),
-            side: BorderSide(color: Colors.grey.withOpacity(0.1))
-          ),
-          child: const Text('Apply'))),
-    
+          SizedBox(
+              width: 80,
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      foregroundColor: dark
+                          ? TColors.white.withValues(alpha: 0.5)
+                          : TColors.dark.withValues(alpha: 0.5),
+                      backgroundColor: TColors.grey.withValues(alpha: 0.2),
+                      side: BorderSide(
+                          color: Colors.grey.withValues(alpha: 0.1))),
+                  child: const Text('Apply'))),
         ],
       ),
     );

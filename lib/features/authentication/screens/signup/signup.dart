@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/common/widgets/widget_login_form/form_divider.dart';
-import 'package:t_store/common/widgets/widget_login_form/social-button.dart';
+import 'package:t_store/common/widgets/widget_login_form/social_button.dart';
 import 'package:t_store/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:t_store/utils/constants/text_strings.dart';
 
