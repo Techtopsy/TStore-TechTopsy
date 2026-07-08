@@ -8,18 +8,24 @@ class BannerController extends GetxController {
 
   /// Variables
   final isLoading = false.obs;
-  final carouselCurrentIndex = 0.obs;
+  final carousalCurrentIndex = 0.obs;
   final RxList<BannerModel> banners = <BannerModel>[].obs;
+
+  @override
+  void onInit() {
+    fetchBanners();
+    super.onInit();
+  }
 
   /// Update Page Navigational Dots
   void updatePageIndicator(int index) {
-    carouselCurrentIndex.value = index;
+    carousalCurrentIndex.value = index;
   }
 
   /// Fetch Banner
-  Future<void> fetchCategories() async {
+  Future<void> fetchBanners() async {
     try {
-      // Show Loader While Loading Banners
+      // Show Loader While Loading Categories
       isLoading.value = true;
 
       // Fetch Banners

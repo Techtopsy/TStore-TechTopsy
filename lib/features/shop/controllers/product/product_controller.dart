@@ -18,9 +18,13 @@ class ProductController extends GetxController {
 
   Future<void> fetchFeaturedProducts() async {
     try {
+      // Show loader while loading products
       isLoading.value = true;
-      final products =
-          await ProductRepository.instance.getFeaturedProducts(); // ✅ Fixed
+
+      // Fetch Products
+      final products = await ProductRepository.instance.getFeaturedProducts();
+
+      // Assign Products
       featuredProducts.assignAll(products);
     } catch (e) {
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
@@ -29,18 +33,29 @@ class ProductController extends GetxController {
     }
   }
 
+  Future<List<ProductModel>> fetchAllFeaturedProducts() async {
+    try {
+      /// Fetch Products
+      final products = await ProductRepository.getFeaturedPrtsooducts();
+      return products;
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      return [];
+    }
+  }
+
   /// Get the product price or price range for variations.
   String getProductPrice(ProductModel product) {
     // Single product type
     if (product.productType == ProductType.single.toString()) {
       final price = (product.salePrice > 0) ? product.salePrice : product.price;
-      return '\$$price'; // ✅ Added $ for currency
+      return '\$$price';
     }
 
     // Variation product type
     if (product.productVariations == null ||
         product.productVariations!.isEmpty) {
-      return '\$${product.price}'; // ✅ Safe fallback
+      return '\$${product.price}';
     }
 
     double smallestPrice = double.infinity;

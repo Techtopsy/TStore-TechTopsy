@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -14,17 +15,55 @@ class ProductRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   /// Get limited featured products
-  Future<List<ProductModel>> getFeaturedProducts({int limit = 4}) async {
+  Future<List<ProductModel>> getFeaturedProducts() async {
     try {
       final snapshot = await _db
           .collection('Products')
           .where('IsFeatured', isEqualTo: true)
-          .limit(limit)
+          .limit(4)
           .get();
 
       return snapshot.docs
           .map((doc) => ProductModel.fromSnapshot(doc))
           .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong while fetching products.';
+    }
+  }
+
+  /// Get limited featured products
+  Future<List<ProductModel>> getAllFeaturedProducts() async {
+    try {
+      final snapshot = await _db
+          .collection('Products')
+          .where('IsFeatured', isEqualTo: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromSnapshot(
+              e as DocumentSnapshot<Map<String, dynamic>>))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong while fetching products.';
+    }
+  }
+
+  /// Get Products based on the Brand
+  Future<List<ProductModel>> fetchProductsByQuery(Query query) async {
+    try {
+      final querySnapshot = await query.get();
+      final List<ProductModel> ProductList = querySnapshot.docs
+          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+          .toList();
+      return productList;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {

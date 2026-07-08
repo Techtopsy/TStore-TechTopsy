@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/primary_header_container.dart';
@@ -6,12 +7,11 @@ import 'package:t_store/common/widgets/layouts/grid_layout.dart';
 import 'package:t_store/common/widgets/products/product_card/product_card_vertical.dart';
 import 'package:t_store/common/widgets/shimmers/vertical_product_shimmer.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
-import 'package:t_store/features/shop/controllers/product_controller.dart';
+import 'package:t_store/features/shop/controllers/product/product_controller.dart';
 import 'package:t_store/features/shop/screens/all_products/all_products.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_app_bar.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_categories.dart';
 import 'package:t_store/features/shop/screens/home/widgets/promo_slider.dart';
-import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
 
@@ -74,24 +74,20 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     //promo slider
-                    const TPromoSlider(
-                      banners: [
-                        TImages.promoBanner1,
-                        TImages.promoBanner2,
-                        TImages.promoBanner3,
-                      ],
-                    ),
+                    const TPromoSlider(),
 
-                    const SizedBox(
-                      height: TSizes.spaceBtwSections,
-                    ),
+                    const SizedBox(height: TSizes.spaceBtwSections),
 
+                    //--- Heading
                     TSectionHeading(
                       title: 'Popular Products',
                       textColor: THelperFunctions.isDarkMode(context)
                           ? Colors.white
                           : Colors.black,
-                      onPressed: () => Get.to(() => const AllProducts()),
+                      onPressed: () => Get.to(() => AllProducts(
+                            title: 'Popular Products',
+                            futureMethod: controller.fetchAllFeaturedProducts(),
+                          )),
                     ),
 
                     const SizedBox(
@@ -100,8 +96,9 @@ class HomeScreen extends StatelessWidget {
 
                     //popular products
                     Obx(() {
-                      if (controller.isLoading.value)
+                      if (controller.isLoading.value) {
                         return const TVerticalProductShimmer();
+                      }
 
                       if (controller.featuredProducts.isEmpty) {
                         return Center(
