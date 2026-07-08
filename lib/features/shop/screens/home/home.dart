@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/search_container.dart';
 import 'package:t_store/common/widgets/layouts/grid_layout.dart';
 import 'package:t_store/common/widgets/products/product_card/product_card_vertical.dart';
+import 'package:t_store/common/widgets/shimmers/vertical_product_shimmer.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
+import 'package:t_store/features/shop/controllers/product_controller.dart';
 import 'package:t_store/features/shop/screens/all_products/all_products.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_app_bar.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_categories.dart';
@@ -19,63 +20,101 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const TprimaryHeaderContainer(
+            //header
+            const TPrimaryHeaderContainer(
               child: Column(
                 children: [
-                  /// -- Appbar -- Tutorial [Section # 3, Video # 3]
+                  //appbar
                   THomeAppBar(),
-                  SizedBox(height: TSizes.spaceBtwSections),
+                  SizedBox(
+                    height: TSizes.spaceBtwSections,
+                  ),
 
-                  /// -- Searchbar -- Tutorial [Section # 3, Video # 4]
+                  //searchbar
                   TSearchContainer(text: 'Search in Store'),
-                  SizedBox(height: TSizes.spaceBtwSections),
+                  SizedBox(
+                    height: TSizes.spaceBtwSections,
+                  ),
 
-                  /// -- Categories -- Tutorial [Section # 3, Video # 4]
+                  //categories
                   Padding(
                     padding: EdgeInsets.only(left: TSizes.defaultSpace),
                     child: Column(
                       children: [
-                        /// -- Heading
-                        TSectionHeading(title: 'Popular Categories', showActionButton: false, textColor: Colors.white),
-                        SizedBox(height: TSizes.spaceBtwItems),
-
-                        /// Categories
-                        THomeCategories(), // SizedBox
-                      ],
-                    ), // Column
-                  ) // Padding
-                ],
-              ),
-            ), // 
-
-            // body
- Padding(
-              padding: const EdgeInsets.all(TSizes.defaultSpace),
-              child: Column(
-                children: [
-                  /// -- Promo Slider -- Tutorial [Section # 3, Video # 6]
-                  const TPromoSlider(banners: [TImages.promoBanner1, TImages.promoBanner2, TImages.promoBanner3]),
-                  const SizedBox(height: TSizes.spaceBtwSections),
-    
-                     TSectionHeading(
-                          title: 'Popular Products',
-                          onPressed: () => Get.to(() => const AllProducts()),
-                          textColor: THelperFunctions.isDarkMode(context) ? Colors.white : Colors.black,
+                        //heading
+                        TSectionHeading(
+                          title: 'Popular Categories',
+                          showActionButton: false,
+                          textColor: Colors.white,
+                        ),
+                        SizedBox(
+                          height: TSizes.spaceBtwItems,
                         ),
 
-                        const SizedBox(
-                      height: TSizes.spaceBtwItems,
+                        //categories
+                        THomeCategories()
+                      ],
                     ),
-                  /// -- Popular Products -- Tutorial [Section # 3, Video # 7]
-                  TGridLayout(itemCount: 6, itemBuilder: (_, index) => const TProductCardVertical()),
+                  ),
+                  SizedBox(
+                    height: TSizes.spaceBtwSections,
+                  )
                 ],
               ),
-            ), // Padding
+            ),
 
+            //body
+            Padding(
+                padding: const EdgeInsets.all(TSizes.defaultSpace),
+                child: Column(
+                  children: [
+                    //promo slider
+                    const TPromoSlider(
+                      banners: [
+                        TImages.promoBanner1,
+                        TImages.promoBanner2,
+                        TImages.promoBanner3,
+                      ],
+                    ),
+
+                    const SizedBox(
+                      height: TSizes.spaceBtwSections,
+                    ),
+
+                    TSectionHeading(
+                      title: 'Popular Products',
+                      textColor: THelperFunctions.isDarkMode(context)
+                          ? Colors.white
+                          : Colors.black,
+                      onPressed: () => Get.to(() => const AllProducts()),
+                    ),
+
+                    const SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
+
+                    //popular products
+                    Obx(() {
+                      if (controller.isLoading.value)
+                        return const TVerticalProductShimmer();
+
+                      if (controller.featuredProducts.isEmpty) {
+                        return Center(
+                            child: Text('No Data Found!',
+                                style: Theme.of(context).textTheme.bodyMedium));
+                      }
+                      return TGridLayout(
+                          itemCount: controller.featuredProducts.length,
+                          itemBuilder: (_, index) => TProductCardVertical(
+                              product: controller.featuredProducts[index]));
+                    }),
+                  ],
+                ))
           ],
         ),
       ),

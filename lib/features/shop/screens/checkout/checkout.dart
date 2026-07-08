@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:t_store/common/widgets/app_bar/app_bar.dart';
 import 'package:t_store/common/widgets/products/cart/coupon_widget.dart';
 import 'package:t_store/common/widgets/sortable/t_rounded_container.dart';
-import 'package:t_store/common/widgets/success-screens/success.dart';
+import 'package:t_store/common/widgets/success_screens/success.dart';
 
 import 'package:t_store/features/shop/screens/cart/widgets/cart_items.dart';
 import 'package:t_store/features/shop/screens/checkout/widgets/billing_address_section.dart';
@@ -29,58 +28,68 @@ class CheckoutScreen extends StatelessWidget {
           'Order Review',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
-       
       ),
-      body:  SingleChildScrollView(
-        child: Padding(padding: const EdgeInsets.all(TSizes.defaultSpace),
-        child: Column(
-          children: [
-            //items in cart
-            const TCartItems(showAddRemoveButtons: false),
-            const SizedBox(height: TSizes.spaceBtwSections,),
-
-            //coupon textfield
-            const TCouponCode(),
-            const SizedBox(height: TSizes.spaceBtwSections,),
-
-            //billing section
-            TRoundedContainer(
-              showBorder: true,
-              padding: const EdgeInsets.all(TSizes.md),
-              backgroundColor: dark ? TColors.black : TColors.white,
-              child: const Column(
-                children: [
-                  //pricing
-                  TBillingAmountSection(),
-                  SizedBox(height: TSizes.spaceBtwItems,),
-
-                  //divider
-                  Divider(),
-                  SizedBox(height: TSizes.spaceBtwItems,),
-
-                  //payment method
-                  TBillingPaymentSection(),
-                  SizedBox(height: TSizes.spaceBtwItems,),
-
-                  //address
-                  TBillingAddressSection(),
-                  SizedBox(height: TSizes.spaceBtwItems),
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(TSizes.defaultSpace),
+          child: Column(
+            children: [
+              //items in cart
+              const TCartItems(showAddRemoveButtons: false),
+              const SizedBox(
+                height: TSizes.spaceBtwSections,
               ),
-            )
-          ],
-        ),
+
+              //coupon textfield
+              const TCouponCode(),
+              const SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
+
+              //billing section
+              TRoundedContainer(
+                showBorder: true,
+                padding: const EdgeInsets.all(TSizes.md),
+                backgroundColor: dark ? TColors.black : TColors.white,
+                child: const Column(
+                  children: [
+                    //pricing
+                    TBillingAmountSection(),
+                    SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
+
+                    //divider
+                    Divider(),
+                    SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
+
+                    //payment method
+                    TBillingPaymentSection(),
+                    SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
+
+                    //address
+                    TBillingAddressSection(),
+                    SizedBox(height: TSizes.spaceBtwItems),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: ElevatedButton(
             onPressed: () => Get.to(() => SuccessScreen(
-              image: TImages.successfulPaymentIcon,
-              title: 'Payment Sucess!',
-              subTitle: 'Your Item will be shipped soon!',
-              onPressed: () => Get.offAll(()=> const NavigationMenu()),
-            )),
+                  image: TImages.successfulPaymentIcon,
+                  title: 'Payment Sucess!',
+                  subTitle: 'Your Item will be shipped soon!',
+                  onPressed: () => Get.offAll(() => const NavigationMenu()),
+                )),
             child: const Text('Checkout \$256.0')),
       ),
     );

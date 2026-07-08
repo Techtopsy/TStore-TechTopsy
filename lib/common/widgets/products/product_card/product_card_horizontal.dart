@@ -7,6 +7,7 @@ import 'package:t_store/common/widgets/sortable/t_rounded_container.dart';
 import 'package:t_store/common/widgets/text/product_title_text.dart';
 import 'package:t_store/common/widgets/text/t_brand_title_text_with_verified_icon.dart';
 import 'package:t_store/common/widgets/text/t_product_price_text.dart';
+import 'package:t_store/features/shop/models/product_model.dart';
 import 'package:t_store/features/shop/screens/product_details/product_detail.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
@@ -21,7 +22,8 @@ class TProductCardHorizontal extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
 
     return GestureDetector(
-      onTap: () => Get.to(() => const ProductDetailScreen()),
+      onTap: () =>
+          Get.to(() => ProductDetailScreen(product: ProductModel.empty())),
       child: Container(
           width: 310,
           padding: const EdgeInsets.all(1),

@@ -78,6 +78,31 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  // Re-authenticate user
+
+  Future<void> reAutheticateEmailAndPassword(
+      String email, String password) async {
+    try {
+      //create a credential
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+
+      //Re authenticate
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      //throw 'Something went wrong. Please try again ${e.code}';
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
   /// [EmailAuthentication] -- REGISTER
   Future<UserCredential> registerWithEmailAndPassword(
       String email, String password) async {
@@ -86,8 +111,8 @@ class AuthenticationRepository extends GetxController {
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-      // on FirebaseException catch (e) {
-      //row TFirebaseException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
       throw const TFormatException();
     } on PlatformException catch (e) {

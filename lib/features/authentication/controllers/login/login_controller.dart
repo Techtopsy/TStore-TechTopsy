@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:t_store/data/repositories/authentication_repository.dart';
+import 'package:t_store/data/repositories/authentication/authentication_repository.dart';
 import 'package:t_store/features/personalization/controllers/user_controller.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/helpers/network_manager.dart';
@@ -9,6 +9,8 @@ import 'package:t_store/utils/popups/full_screen_loader.dart';
 import 'package:t_store/utils/popups/loaders.dart';
 
 class LoginController extends GetxController {
+  static LoginController get instance => Get.find();
+
   //variables
   final remeberMe = false.obs;
   final hidePassword = true.obs;
@@ -51,8 +53,8 @@ class LoginController extends GetxController {
         localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
 
-      //Login user email and pass
-      final userCredentials = await AuthenticationRepository.instance
+      //register user in the firebase authentication & save user data in firebase
+      await AuthenticationRepository.instance
           .loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       //Remove loader
@@ -62,7 +64,9 @@ class LoginController extends GetxController {
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
       TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap Login', message: e.toString());
+
+      // Show some generic error to user
+      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }
 
@@ -93,11 +97,7 @@ class LoginController extends GetxController {
       //Redirect
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
-      //remove loader
-      TFullScreenLoader.stopLoading();
-
-      TLoaders.errorSnackBar(
-          title: 'Oh Snap Login Google', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }
 }

@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/app_bar/app_bar.dart';
 import 'package:t_store/common/widgets/images/t_circular_image.dart';
+import 'package:t_store/common/widgets/shimmers/shimmer.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
+import 'package:t_store/features/personalization/controllers/user_controller.dart';
 import 'package:t_store/features/personalization/screens/profile/widgets/change_name/change_name.dart';
 import 'package:t_store/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
-
-import '../../controllers/user_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -35,23 +35,26 @@ class ProfileScreen extends StatelessWidget {
                     Obx(() {
                       final networkImage = controller.user.value.profilePicture;
                       final image =
-                          networkImage.isNotEmpty ? NetworkImage : TImages.user;
-                      return TCircularImage(
-                        image: TImages.user,
-                        width: 80,
-                        height: 80,
-                        isNetworkImage: networkImage.isNotEmpty,
-                      );
+                          networkImage.isNotEmpty ? networkImage : TImages.user;
+
+                      return controller.imageUploading.value
+                          ? const TShimmerEffect(
+                              width: 80,
+                              height: 80,
+                              radius: 80,
+                            )
+                          : TCircularImage(
+                              image: image,
+                              width: 80,
+                              height: 80,
+                              isNetworkImage: networkImage.isNotEmpty);
                     }),
                     TextButton(
-                      onPressed: () => controller.uploadUserProfilePicture(),
-                      child: const Text('Change Profile Picture'),
-                    )
+                        onPressed: () => controller.uploadUserProfilePicture(),
+                        child: const Text('Change Profile Picture'))
                   ],
                 ),
               ),
-
-              /// Details
               const SizedBox(
                 height: TSizes.spaceBtwItems / 2,
               ),
@@ -59,8 +62,6 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: TSizes.spaceBtwItems,
               ),
-
-              /// Heading Profile Info
               const TSectionHeading(
                 title: 'Profile Information',
                 showActionButton: false,
@@ -70,14 +71,14 @@ class ProfileScreen extends StatelessWidget {
               ),
 
               TProfileMenu(
+                onPressed: () => Get.off(() => const ChangeName()),
                 title: 'Name',
                 value: controller.user.value.fullName,
-                onPressed: () => Get.to(() => const ChangeName()),
               ),
               TProfileMenu(
-                title: 'Username',
-                value: controller.user.value.userName,
                 onPressed: () {},
+                title: 'Username',
+                value: controller.user.value.username,
               ),
               const SizedBox(
                 height: TSizes.spaceBtwItems,
@@ -91,30 +92,30 @@ class ProfileScreen extends StatelessWidget {
                 showActionButton: false,
               ),
               TProfileMenu(
+                onPressed: () {},
                 title: 'User ID',
                 value: controller.user.value.id,
                 icon: Iconsax.copy,
-                onPressed: () {},
               ),
               TProfileMenu(
+                onPressed: () {},
                 title: 'E-mail',
                 value: controller.user.value.email,
-                onPressed: () {},
               ),
               TProfileMenu(
-                title: 'Phone Number',
-                value: controller.user.value.phoneNumber,
                 onPressed: () {},
+                title: controller.user.value.phoneNumber,
+                value: '+234 80 2949 1521',
               ),
               TProfileMenu(
+                onPressed: () {},
                 title: 'Gender',
-                value: "",
-                onPressed: () {},
+                value: 'male',
               ),
               TProfileMenu(
-                title: 'Date of Birth',
-                value: "",
                 onPressed: () {},
+                title: 'Date of Birth',
+                value: '08 June, 1988',
               ),
 
               const Divider(),
@@ -123,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
               ),
 
               TextButton(
-                  onPressed: () {},
+                  onPressed: () => controller.deleteAccountWarningPopup(),
                   child: const Text(
                     'Close Account',
                     style: TextStyle(color: Colors.red),

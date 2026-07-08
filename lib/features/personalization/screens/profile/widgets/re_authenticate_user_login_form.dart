@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:t_store/common/widgets/app_bar/app_bar.dart';
 import 'package:t_store/features/personalization/controllers/user_controller.dart';
+import 'package:t_store/features/personalization/screens/profile/profile.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/constants/text_strings.dart';
 import 'package:t_store/utils/validators/validation.dart';
@@ -13,64 +15,74 @@ class ReAuthLoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = UserController.instance;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Re-Authenticate User'),
+      appBar: TAppBar(
+        showBackArrow: true,
+        leadingOnPressed: () => Get.off(() => const ProfileScreen()),
+        title: Text(
+          'Re-Authenticate User',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Form(
-            key: controller.reAuthFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// Email
-                TextFormField(
-                  controller: controller.verifyEmail,
-                  validator: TValidator.validateEmail,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Iconsax.direct_right),
-                    labelText: 'Email', // Capitalized
-                  ),
-                ),
-                const SizedBox(height: TSizes.spaceBtwInputFields),
+      body: Padding(
+        padding: const EdgeInsets.all(TSizes.defaultSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ///headings
+            // Text(
+            //   'Use real name for easy verification. This will appear on several pages.',
+            //   style: Theme.of(context).textTheme.labelMedium,
+            // ),
+            // const SizedBox(height: TSizes.spaceBtwSections,),
 
-                /// Password
-                Obx(
-                  () => TextFormField(
-                    controller: controller.verifyPassword,
-                    validator: (value) =>
-                        TValidator.validateEmptyText('Password', value),
-                    obscureText: controller.hidePassword.value,
-                    decoration: InputDecoration(
-                      labelText: TTexts.password,
-                      prefixIcon: const Icon(Iconsax.password_check),
-                      suffixIcon: IconButton(
-                        onPressed: () => controller.hidePassword.value =
-                            !controller.hidePassword.value,
-                        icon: Icon(
-                          controller.hidePassword.value
-                              ? Iconsax.eye_slash
-                              : Iconsax.eye,
+            // ///text field and button
+
+            Form(
+                key: controller.reAuthFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: controller.verifyEmail,
+                      validator: TValidator.validateEmail,
+                      expands: false,
+                      decoration: const InputDecoration(
+                          labelText: TTexts.email,
+                          prefixIcon: Icon(Iconsax.direct_right)),
+                    ),
+                    const SizedBox(
+                      height: TSizes.spaceBtwInputFields,
+                    ),
+                    Obx(
+                      () => TextFormField(
+                        controller: controller.verifyPassword,
+                        validator: (value) =>
+                            TValidator.validateEmptyText('Password', value),
+                        obscureText: controller.hidePassword.value,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Iconsax.password_check),
+                          labelText: TTexts.password,
+                          suffixIcon: IconButton(
+                              onPressed: () => controller.hidePassword.value =
+                                  !controller.hidePassword.value,
+                              icon: Icon(controller.hidePassword.value
+                                  ? Iconsax.eye_slash
+                                  : Iconsax.eye)),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: TSizes.spaceBtwInputFields),
-
-                /// Login Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        controller.reAuthenticateEmailAndPasswordUser(),
-                    child: const Text('Verify'),
-                  ),
-                ),
-              ],
+                  ],
+                )),
+            const SizedBox(
+              height: TSizes.spaceBtwSections,
             ),
-          ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () =>
+                      controller.reAutheticateEmailAndPasswordUser(),
+                  child: const Text('Verify')),
+            )
+          ],
         ),
       ),
     );

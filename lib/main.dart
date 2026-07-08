@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:t_store/app.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:t_store/data/repositories/authentication_repository.dart';
+import 'package:t_store/data/repositories/authentication/authentication_repository.dart';
 import 'package:t_store/firebase_options.dart';
 
 Future<void> main() async {
@@ -17,9 +17,10 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   ///-- Initialize Firebase & Authentication Repository
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then(
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then(
     (FirebaseApp value) => Get.put(AuthenticationRepository()),
-    );
+  );
 
   // This cleanly points to the App widget located in your app.dart file
   runApp(const App());

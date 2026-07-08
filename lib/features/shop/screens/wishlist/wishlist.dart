@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/app_bar/app_bar.dart';
-
 import 'package:t_store/common/widgets/icons/t_circular_icon.dart';
 import 'package:t_store/common/widgets/layouts/grid_layout.dart';
 import 'package:t_store/common/widgets/products/product_card/product_card_vertical.dart';
-import 'package:t_store/features/shop/screens/home/home.dart';
+import 'package:t_store/features/shop/models/product_model.dart';
+import 'package:t_store/navigation_menu.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
 class FavouriteScreen extends StatelessWidget {
@@ -15,11 +14,17 @@ class FavouriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: TAppBar(
-        title: Text('WishList', style: Theme.of(context).textTheme.headlineMedium,),
+        title: Text(
+          'WishList',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         actions: [
-          TCircularIcon(icon: Iconsax.add, onPressed: ()=> Get.to(const HomeScreen()),)
+          TCircularIcon(
+            icon: Iconsax.add,
+            onPressed: () => Get.offAll(const NavigationMenu()),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -27,10 +32,13 @@ class FavouriteScreen extends StatelessWidget {
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
-              TGridLayout(itemCount: 6, itemBuilder: (_, index) => const TProductCardVertical())
+              TGridLayout(
+                  itemCount: 8,
+                  itemBuilder: (_, index) =>
+                      TProductCardVertical(product: ProductModel.empty())),
             ],
           ),
-          ),
+        ),
       ),
     );
   }

@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # State Management
-  get: ^4.7.2
+  get: ^7.2.0
   get_storage: ^2.1.1
 
   # Product Specific

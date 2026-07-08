@@ -2,17 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:t_store/utils/formatters/formatter.dart';
 
 class UserModel {
-  final String id;
-  final String userName;
-  final String email;
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
-  final String profilePicture;
+  // Keep those values final which you do not want to update
+  final String id, username, email;
+  String firstName, lastName, phoneNumber, profilePicture;
 
+  /// Constructor for UserModel.
   UserModel({
     required this.id,
-    required this.userName,
+    required this.username,
     required this.email,
     required this.firstName,
     required this.lastName,
@@ -20,78 +17,70 @@ class UserModel {
     required this.profilePicture,
   });
 
+//helper function to get the full name
   String get fullName => '$firstName $lastName';
+
+// Helper function to format phone number
   String get formattedPhoneNo => TFormatter.formatPhoneNumber(phoneNumber);
 
   /// Static function to split full name into first and last name.
   static List<String> nameParts(String fullName) => fullName.split(" ");
 
-  /// Static function to generate a username from the full name.
   static String generateUsername(String fullName) {
     List<String> nameParts = fullName.split(" ");
     String firstName = nameParts[0].toLowerCase();
     String lastName = nameParts.length > 1 ? nameParts[1].toLowerCase() : "";
+
     String camelCaseUsername = "$firstName$lastName";
     String usernameWithPrefix = "cwt_$camelCaseUsername";
+
     return usernameWithPrefix;
   }
 
-  /// Static function to create an empty user model.
+//static function to create an empty user model
   static UserModel empty() => UserModel(
-        id: "",
-        firstName: "",
-        lastName: "",
-        userName: "",
-        email: "",
-        phoneNumber: "",
-        profilePicture: "",
-      );
+      id: '',
+      username: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      profilePicture: '');
 
-  /// Create a copy of the model with updated fields
-  UserModel copyWith({
-    String? id,
-    String? userName,
-    String? email,
-    String? firstName,
-    String? lastName,
-    String? phoneNumber,
-    String? profilePicture,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      userName: userName ?? this.userName,
-      email: email ?? this.email,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      profilePicture: profilePicture ?? this.profilePicture,
-    );
-  }
-
-  /// Convert model to JSON structure for storing data in Firebase.
+//convert model to json structure for storing data in firebase
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'userName': userName,
-      'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
-      'phoneNumber': phoneNumber,
-      'profilePicture': profilePicture,
+      'FirstName': firstName,
+      'LasttName': lastName,
+      'Username': username,
+      'Email': email,
+      'PhoneNumber': phoneNumber,
+      'ProfilePicture': profilePicture,
     };
   }
 
+//factory method to create a UserModel from a firebase document snapshot.
+// factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+//   if (document.data() != null) {
+//     final data = document.data()!;
+//     return UserModel(id: document.id, username: data['Username'] ?? '', email: data['Email'] ?? '', firstName: data['FirstName'] ?? '', lastName: data['LastName'] ?? '', phoneNumber: data['PhoneNumber'] ?? '', profilePicture: data['ProfilePicture'] ?? '');
+//   }
+// }
+
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
+    final data = document.data();
+    if (data == null) {
+      throw Exception('Document data is null');
+    }
     return UserModel(
       id: document.id,
-      userName: data['userName'] ?? "",
-      email: data['email'] ?? "",
-      firstName: data['firstName'] ?? "",
-      lastName: data['lastName'] ?? "",
-      phoneNumber: data['phoneNumber'] ?? "",
-      profilePicture: data['profilePicture'] ?? "",
+      username: data['Username'] ?? '',
+      email: data['Email'] ?? '',
+      firstName: data['FirstName'] ?? '',
+      lastName: data['LastName'] ?? '',
+      phoneNumber: data['PhoneNumber'] ?? '',
+      profilePicture: data['ProfilePicture'] ?? '',
     );
   }
 }
