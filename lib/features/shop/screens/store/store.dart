@@ -6,7 +6,9 @@ import 'package:t_store/common/widgets/brand/t_brand_card.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/search_container.dart';
 import 'package:t_store/common/widgets/layouts/grid_layout.dart';
 import 'package:t_store/common/widgets/products/cart/cart_menu_icon.dart';
+import 'package:t_store/common/widgets/shimmers/brands_shimmer.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
+import 'package:t_store/features/shop/controllers/brand_controller.dart';
 import 'package:t_store/features/shop/controllers/category_controller.dart';
 import 'package:t_store/features/shop/screens/all_brands/all_brands.dart';
 import 'package:t_store/features/shop/screens/store/widgets/category_tab.dart';
@@ -20,7 +22,7 @@ class StoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // ✅ Wrap with Obx for reactivity
+      final brandController = Get.put(BrandController());
       final categories = CategoryController.instance.featuredCategories;
 
       return DefaultTabController(
@@ -74,13 +76,31 @@ class StoreScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
-                        TGridLayout(
-                          itemCount: 4,
-                          mainAxisExtent: 80,
-                          itemBuilder: (_, index) {
-                            return const TBrandCard();
-                          },
-                        ),
+                        Obx(() {
+                          if (brandController.isLoading.value) {
+                            return const TBrandsShimmer();
+                          }
+                          if (brandController.featuredBrands.isEmpty) {
+                            return Center(
+                                child: Text('No Data Found!',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .apply(color: Colors.white)));
+                          }
+                          return TGridLayout(
+                            itemCount: brandController.featuredBrands.length,
+                            mainAxisExtent: 80,
+                            itemBuilder: (_, index) {
+                              final brand =
+                                  brandController.featuredBrands[index];
+                              return TBrandCard(
+                                showBorder: true,
+                                brand: brand,
+                              );
+                            },
+                          );
+                        }),
                       ],
                     ),
                   ),

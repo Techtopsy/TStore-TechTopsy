@@ -7,6 +7,7 @@ import 'package:t_store/common/widgets/sortable/sortable.dart';
 import 'package:t_store/features/shop/controllers/all_products_controller.dart';
 import 'package:t_store/features/shop/models/product_model.dart';
 import 'package:t_store/utils/constants/sizes.dart';
+import 'package:t_store/utils/helpers/cloud_helper_functions.dart';
 
 class AllProducts extends StatelessWidget {
   const AllProducts(
@@ -34,19 +35,11 @@ class AllProducts extends StatelessWidget {
                 builder: (context, snapshot) {
                   // Check the state of the FutureBuilder Snapshot
                   const loader = TVerticalProductShimmer();
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return loader;
-                  }
+                  final widget = TCloudHelperFunctions.checkMultiRecordState(
+                      snapshot: snapshot, loader: loader);
 
-                  if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No Data Found!'));
-                  }
-
-                  if (snapshot.hasError) {
-                    return const Center(child: Text('Something went wrong!'));
-                  }
+                  // Return appropriate widget based on snapshot state
+                  if (widget != null) return widget;
 
                   // Product Found!
                   final products = snapshot.data!;
