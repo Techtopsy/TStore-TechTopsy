@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -35,7 +34,7 @@ class ProductRepository extends GetxController {
     }
   }
 
-  /// Get limited featured products
+  /// Get all featured products
   Future<List<ProductModel>> getAllFeaturedProducts() async {
     try {
       final snapshot = await _db
@@ -44,8 +43,7 @@ class ProductRepository extends GetxController {
           .get();
 
       return snapshot.docs
-          .map((doc) => ProductModel.fromSnapshot(
-              e as DocumentSnapshot<Map<String, dynamic>>))
+          .map((doc) => ProductModel.fromSnapshot(doc))
           .toList();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
@@ -60,8 +58,9 @@ class ProductRepository extends GetxController {
   Future<List<ProductModel>> fetchProductsByQuery(Query query) async {
     try {
       final querySnapshot = await query.get();
-      final List<ProductModel> ProductList = querySnapshot.docs
-          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+      final List<ProductModel> productList = querySnapshot.docs
+          .map((doc) => ProductModel.fromSnapshot(
+              doc as DocumentSnapshot<Map<String, dynamic>>))
           .toList();
       return productList;
     } on FirebaseException catch (e) {
@@ -70,6 +69,27 @@ class ProductRepository extends GetxController {
       throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong while fetching products.';
+    }
+  }
+
+  /// Get Products for a given brand ID
+  Future<List<ProductModel>> getProductsForBrand(
+      {required String brandId}) async {
+    try {
+      final snapshot = await _db
+          .collection('Products')
+          .where('Brand.Id', isEqualTo: brandId)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromSnapshot(doc))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong while fetching brand products.';
     }
   }
 

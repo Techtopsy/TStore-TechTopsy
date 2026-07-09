@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:t_store/common/widgets/brand/t_brand_showcase.dart';
 import 'package:t_store/common/widgets/layouts/grid_layout.dart';
 import 'package:t_store/common/widgets/products/product_card/product_card_vertical.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
 import 'package:t_store/features/shop/models/category_model.dart';
 import 'package:t_store/features/shop/models/product_model.dart';
-import 'package:t_store/utils/constants/image_strings.dart';
+import 'package:t_store/features/shop/screens/store/widgets/category_brands.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
 class TCategoryTab extends StatelessWidget {
@@ -27,14 +26,7 @@ class TCategoryTab extends StatelessWidget {
             child: Column(
               children: [
                 //brands
-
-                const TBrandShowcase(
-                  images: [
-                    TImages.productImage1,
-                    TImages.productImage2,
-                    TImages.productImage3,
-                  ],
-                ),
+                CategoryBrands(category: category),
 
                 const SizedBox(
                   height: TSizes.spaceBtwItems,

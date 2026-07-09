@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:t_store/data/repositories/brands/brand_repository.dart';
+import 'package:t_store/data/repositories/product/product_repository.dart';
+import 'package:t_store/features/shop/models/product_model.dart';
 
 import '../../../utils/popups/loaders.dart';
 import '../models/brand_model.dart';
@@ -34,6 +36,29 @@ class BrandController extends GetxController {
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  /// -- Get Brands For Category
+  Future<List<BrandModel>> getBrandsForCategory(String categoryId) async {
+    try {
+      final brands = await brandRepository.getBrandsForCategory(categoryId);
+      return brands;
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      return [];
+    }
+  }
+
+  /// Get Brand Specific Products from your data source
+  Future<List<ProductModel>> getBrandProducts(String brandId) async {
+    try {
+      final products = await ProductRepository.instance
+          .getProductsForBrand(brandId: brandId);
+      return products;
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      return [];
     }
   }
 }
